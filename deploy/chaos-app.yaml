@@ -11,6 +11,9 @@ spec:
     metadata:
       labels:
         app: reader
+      annotations:
+        # Annotation for Litmus
+        litmuschaos.io/chaos: "true"
     spec:
       containers:
         - name: reader
@@ -26,8 +29,6 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "500m"
-          ports:
-            - containerPort: 8811
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -43,6 +44,9 @@ spec:
     metadata:
       labels:
         app: writer
+      annotations:
+        # Annotation for Litmus
+        litmuschaos.io/chaos: "true"
     spec:
       containers:
         - name: writer
@@ -58,8 +62,6 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "500m"
-          ports:
-            - containerPort: 8811
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -74,6 +76,9 @@ spec:
     metadata:
       labels:
         app: server
+      annotations:
+        # Annotation for Litmus
+        litmuschaos.io/chaos: "true"
     spec:
       containers:
         - name: server
