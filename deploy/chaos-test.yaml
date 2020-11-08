@@ -11,6 +11,8 @@ spec:
         value: "chaos-app"
       - name: adminModeNamespace
         value: "litmus"
+      - name: appLabel
+        value: "server"
   templates:
     - name: argowf-chaos
       steps:
@@ -36,10 +38,11 @@ spec:
                 spec:
                   appinfo:
                     appns: {{workflow.parameters.appNamespace}}
+                    applabel: "app={{workflow.parameters.appLabel}}"
                     appkind: deployment
                   jobCleanUpPolicy: retain
                   monitoring: false
-                  annotationCheck: "true"
+                  annotationCheck: "false"
                   engineState: "active"
                   chaosServiceAccount: litmus-admin
                   experiments:
@@ -48,9 +51,9 @@ spec:
                         components:
                           env:
                             - name: TOTAL_CHAOS_DURATION
-                              value: "30"
-                            - name: CHAOS_INTERVAL
                               value: "10"
+                            - name: CHAOS_INTERVAL
+                              value: "5"
                             - name: FORCE
                               value: "false"
       container:
@@ -68,6 +71,7 @@ spec:
                 apiVersion: batch/v1
                 kind: Job
                 metadata:
+                  namespace: {{workflow.parameters.appNamespace}}
                   labels:
                     app: bench
                   generateName: bench-
@@ -90,7 +94,7 @@ spec:
                           - name: SERVER_PORT
                             value: "8811"
                           - name: BENCHMARK_DURATION
-                            value: "300"
+                            value: "180"
                         image: devth/alpine-bench
                         imagePullPolicy: Always
                         name: bench
