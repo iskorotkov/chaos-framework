@@ -6,7 +6,7 @@ metadata:
 spec:
   appinfo:
     appns: chaos-app
-    applabel: "app=reader"
+    applabel: "app=server"
     appkind: deployment
   jobCleanUpPolicy: retain
   monitoring: false
@@ -21,6 +21,6 @@ spec:
             - name: NETWORK_INTERFACE
               value: "eth0"
             - name: TARGET_CONTAINER
-              value: "reader"
+              value: "server"
             - name: NETWORK_LATENCY
               value: "1000"

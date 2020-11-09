@@ -6,7 +6,7 @@ metadata:
 spec:
   appinfo:
     appns: chaos-app
-    applabel: "app=writer"
+    applabel: "app=server"
     appkind: deployment
   jobCleanUpPolicy: retain
   monitoring: false
@@ -19,7 +19,7 @@ spec:
         components:
           env:
             - name: TARGET_CONTAINER
-              value: "writer"
+              value: "server"
             - name: NETWORK_INTERFACE
               value: "eth0"
             - name: NETWORK_PACKET_LOSS_PERCENTAGE
