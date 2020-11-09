@@ -1,7 +1,7 @@
 #!/bin/bash
 # Install Litmus
 kubectl create ns litmus
-kubectl apply -f https://litmuschaos.github.io/litmus/litmus-operator-v1.9.0.yaml
+kubectl apply -f https://litmuschaos.github.io/litmus/litmus-operator-v1.9.1.yaml
 
 # Install generic experiments
 kubectl apply -f https://hub.litmuschaos.io/api/chaos/1.9.1?file=charts/generic/experiments.yaml -n litmus
