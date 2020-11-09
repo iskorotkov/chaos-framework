@@ -1,1 +1,1 @@
-# Chaos backend (Litmus)
+# Chaos backend (Kubernetes)
