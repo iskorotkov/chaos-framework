@@ -1,0 +1,24 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: network-partition
+  namespace: chaos-mesh
+spec:
+  action: partition
+  mode: one
+  selector:
+    namespaces:
+      - chaos-app
+    labelSelectors:
+      "app": "writer"
+  direction: to
+  target:
+    selector:
+      namespaces:
+        - chaos-app
+      labelSelectors:
+        "app": "writer"
+    mode: one
+  duration: '10s'
+  scheduler:
+    cron: '@every 15s'
