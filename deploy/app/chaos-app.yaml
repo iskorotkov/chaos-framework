@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reader
+  namespace: chaos-app
   labels:
     app: reader
   annotations:
@@ -38,6 +39,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: writer
+  namespace: chaos-app
   labels:
     app: writer
   annotations:
@@ -75,6 +77,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: server
+  namespace: chaos-app
   labels:
     app: server
   annotations:
@@ -106,6 +109,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: server
+  namespace: chaos-app
 spec:
   selector:
     app: server
