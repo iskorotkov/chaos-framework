@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: reader
-          image: iskorotkov/chaos-client
+          image: iskorotkov/chaos-client:alpine
           # Ensure the latest image is used
           imagePullPolicy: Always
           args:
@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
         - name: writer
-          image: iskorotkov/chaos-client
+          image: iskorotkov/chaos-client:alpine
           # Ensure the latest image is used
           imagePullPolicy: Always
           args:
@@ -101,7 +101,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: iskorotkov/chaos-server
+          image: iskorotkov/chaos-server:alpine
           # Ensure the latest image is used
           imagePullPolicy: Always
           resources:
