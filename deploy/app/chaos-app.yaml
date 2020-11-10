@@ -23,6 +23,8 @@ spec:
       containers:
         - name: reader
           image: iskorotkov/chaos-client
+          # Ensure the latest image is used
+          imagePullPolicy: Always
           args:
             - "-host"
             - "server"
@@ -61,6 +63,8 @@ spec:
       containers:
         - name: writer
           image: iskorotkov/chaos-client
+          # Ensure the latest image is used
+          imagePullPolicy: Always
           args:
             - "-host"
             - "server"
@@ -98,6 +102,8 @@ spec:
       containers:
         - name: server
           image: iskorotkov/chaos-server
+          # Ensure the latest image is used
+          imagePullPolicy: Always
           resources:
             limits:
               memory: "128Mi"
