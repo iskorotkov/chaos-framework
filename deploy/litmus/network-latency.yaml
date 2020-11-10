@@ -8,7 +8,7 @@ spec:
     appns: chaos-app
     applabel: "app=server"
     appkind: deployment
-  jobCleanUpPolicy: retain
+  jobCleanUpPolicy: delete
   monitoring: false
   annotationCheck: "true"
   engineState: "active"
@@ -23,4 +23,4 @@ spec:
             - name: TARGET_CONTAINER
               value: "server"
             - name: NETWORK_LATENCY
-              value: "1000"
+              value: "100"
