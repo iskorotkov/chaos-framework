@@ -17,7 +17,7 @@ spec:
       namespaces:
         - chaos-app
       labelSelectors:
-        "app": "writer"
+        "app": "server"
     mode: one
   duration: '10s'
   scheduler:
