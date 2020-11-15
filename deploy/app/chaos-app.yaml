@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: reader
-          image: iskorotkov/chaos-client:v1.0.0
+          image: iskorotkov/chaos-client:v0.1.0
           args:
             - "-host"
             - "server"
@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
         - name: writer
-          image: iskorotkov/chaos-client:v1.0.0
+          image: iskorotkov/chaos-client:v0.1.0
           args:
             - "-host"
             - "server"
@@ -83,7 +83,7 @@ metadata:
   annotations:
     # Annotation for Litmus
     litmuschaos.io/chaos: "true"
-spec:
+spec:1
   selector:
     matchLabels:
       app: server
@@ -97,7 +97,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: iskorotkov/chaos-server:v1.0.0
+          image: iskorotkov/chaos-server:v0.1.0
           resources:
             limits:
               memory: "128Mi"
