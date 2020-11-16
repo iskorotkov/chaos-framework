@@ -83,7 +83,7 @@ metadata:
   annotations:
     # Annotation for Litmus
     litmuschaos.io/chaos: "true"
-spec:1
+spec:
   selector:
     matchLabels:
       app: server
