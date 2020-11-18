@@ -18,9 +18,14 @@ metadata:
   labels:
     app: prometheus
 rules:
-  - apiGroups: [ "","apps","batch","extensions" ]
-    resources: [ "pods","jobs","daemonsets","events","persistentvolumes","persistentvolumeclaims","endpoints","ingresses","nodes","statefulsets","deployments","services" ]
+  - apiGroups: [ "" ]
+    resources: [ "pods","endpoints","ingresses","nodes","services" ]
     verbs: [ "get","list","watch" ]
+  - apiGroups: [ "" ]
+    verbs: [ "get" ]
+    resources: [ "configmaps" ]
+  - nonResourceURLs: [ "/metrics" ]
+    verbs: [ "get" ]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -49,14 +54,12 @@ data:
       evaluation_interval: 15s
 
     rule_files:
-      # - "first.rules"
-      # - "second.rules"
 
     scrape_configs:
       - job_name: prometheus
         static_configs:
           - targets: ['localhost:9090']
-      - job_name: app-monitor
+      - job_name: app_monitor
         kubernetes_sd_configs:
           - role: pod
             namespaces:
