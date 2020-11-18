@@ -4,6 +4,40 @@ metadata:
   name: prometheus
 ---
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus-sa
+  namespace: prometheus
+  labels:
+    app: prometheus
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus-access
+  labels:
+    app: prometheus
+rules:
+  - apiGroups: [ "","apps","batch","extensions" ]
+    resources: [ "pods","jobs","daemonsets","events","persistentvolumes","persistentvolumeclaims","endpoints","ingresses","nodes","statefulsets","deployments","services" ]
+    verbs: [ "get","list","watch" ]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus-sa
+  labels:
+    app: prometheus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-access
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-sa
+    namespace: prometheus
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prometheus-config
@@ -22,6 +56,12 @@ data:
       - job_name: prometheus
         static_configs:
           - targets: ['localhost:9090']
+      - job_name: app-monitor
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names:
+                - chaos-app
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -37,6 +77,7 @@ spec:
       labels:
         app: prometheus
     spec:
+      serviceAccountName: prometheus-sa
       containers:
         - name: prometheus
           image: prom/prometheus
