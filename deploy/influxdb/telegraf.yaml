@@ -1,9 +1,4 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: influxdb-telegraf
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: telegraf-sa
