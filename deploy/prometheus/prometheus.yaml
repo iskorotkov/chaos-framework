@@ -59,15 +59,19 @@ data:
       - job_name: prometheus
         static_configs:
           - targets: ['localhost:9090']
-      - job_name: app_monitor
+      - job_name: kubernetes-nodes
+        scheme: https
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         kubernetes_sd_configs:
-          - role: pod
+          - role: node
             namespaces:
               names:
                 - chaos-app
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: prometheus
   namespace: prometheus
