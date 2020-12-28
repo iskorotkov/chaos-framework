@@ -30,7 +30,7 @@ spec:
           image: iskorotkov/chaos-client:v0.1.0
           args:
             - "-host"
-            - "server"
+            - "$(SERVER_SERVICE_HOST)"
             - "-verb"
             - "get"
             - "-rate"
@@ -68,7 +68,7 @@ spec:
           image: iskorotkov/chaos-client:v0.1.0
           args:
             - "-host"
-            - "server"
+            - "$(SERVER_SERVICE_HOST)"
             - "-verb"
             - "post"
             - "-rate"
