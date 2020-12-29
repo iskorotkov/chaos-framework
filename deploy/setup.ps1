@@ -1,5 +1,5 @@
 # Create cluster
-& "$PSScriptRoot\minikube\minikube-v1.16.x-windows.ps1"
+& "$PSScriptRoot\minikube\minikube-v1.16.x-windows-docker.ps1"
 
 # Install dependencies
 & "$PSScriptRoot\litmus\setup.ps1"
