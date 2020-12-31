@@ -6,6 +6,3 @@
 # Install dependecies
 ./litmus/setup.sh
 ./argo/setup.sh
-
-# Install sample app
-./sample-app/setup.sh

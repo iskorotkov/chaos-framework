@@ -4,6 +4,3 @@
 # Install dependencies
 & "$PSScriptRoot\litmus\setup.ps1"
 & "$PSScriptRoot\argo\setup.ps1"
-
-# Install sample app
-& "$PSScriptRoot\sample-app\setup.ps1"
