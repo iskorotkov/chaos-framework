@@ -4,3 +4,7 @@
 # Install dependencies
 & "$PSScriptRoot\litmus\setup.ps1"
 & "$PSScriptRoot\argo\setup.ps1"
+
+# Install infrastructure
+kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-scheduler/master/deploy/scheduler.yaml
+kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-frontend/master/deploy/frontend.yaml
