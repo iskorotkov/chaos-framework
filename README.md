@@ -7,7 +7,6 @@ Chaos Framework is a platform for easy resilience testing in Kubernetes. It auto
   - [Features](#features)
   - [Platforms](#platforms)
     - [Windows 10 WSL2 and netem](#windows-10-wsl2-and-netem)
-    - [Minikube and Load Balancers](#minikube-and-load-balancers)
   - [Dependencies](#dependencies)
   - [Installation](#installation)
   - [Requirements](#requirements)
@@ -82,12 +81,6 @@ Note: when running on a platform where Linux kernel doesn't have netem module al
 On Windows 10 WSL2 all network-related failures with not work due to missing netem module in the default kernel. You have to either use another way to create a Kubernetes cluster or recompile and swap the default WSL2 kernel.
 
 See [WSL2 kernel Github repo](https://github.com/microsoft/WSL2-Linux-Kernel) and [detailed instruction on how to recompile and swap it](https://microhobby.com.br/blog/2019/09/21/compiling-your-own-linux-kernel-for-windows-wsl2/). Keep in mind that the instruction doesn't show you how to enable netem module, it only shows general process of modifying the kernel. You will have to find (use CTRL+F) substring “NETEM” in the config and change it.
-
-### Minikube and Load Balancers
-
-Load Balancers in minikube cluster work strange. If you have issues with it that you can't solve, you can try a Kubernetes cluster in Docker Desktop.
-
-Real-life story: integration tests that use [terratest](https://github.com/gruntwork-io/terratest) to connect to Kubernetes services and test them doesn't work correctly with minikube cluster with Docker driver.
 
 ## Dependencies
 
