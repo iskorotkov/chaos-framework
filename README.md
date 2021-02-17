@@ -10,7 +10,7 @@ Chaos Framework is a platform for easy resilience testing in Kubernetes. It auto
   - [Dependencies](#dependencies)
   - [Installation](#installation)
   - [Requirements](#requirements)
-  - [Troubleshooting](#troubleshooting)
+  - [FAQ](#faq)
   - [Other repos](#other-repos)
 
 ## Overview
@@ -168,7 +168,7 @@ In order for your custom applications and deployments to work, make sure they ha
 - Pods should contain a single container. Now it's only possible to induce failures on the first container in the pod, so all additional containers will be ignored.
 - Deployments and pods must be annotated with `litmuschaos.io/chaos: "true"`. This annotation prevents Litmus from invoking more damage on your application than expected. See [Litmus docs](https://docs.litmuschaos.io/docs/getstarted/).
 
-## Troubleshooting
+## FAQ
 
 Q: Network-related failures do not work.
 
@@ -187,6 +187,12 @@ Q: How to change a target namespace?
 Q: How to change a duration, or an interval of test stages?
 
 A: Download [Scheduler manifest](https://github.com/iskorotkov/chaos-scheduler/blob/master/deploy/scheduler.yaml), change environment variables and redeploy it. See [Scheduler's README](https://github.com/iskorotkov/chaos-scheduler) for more info.
+
+---
+
+Q: I try to delete a Kubernetes resource, but it won't get deleted (i. e. kubectl is stuck at deletion).
+
+A: Edit the resource manually in your text editor and remove all finalizers. If it doesn't work (or if the resource doesn't have any finalizers) find related resources and delete finalizers in them (e.g. when CRD deletion is stuck, delete all instances of this CRD).
 
 ## Other repos
 
