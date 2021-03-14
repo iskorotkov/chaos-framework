@@ -60,6 +60,7 @@ Current status of development is shown here:
 The platform does not have vendor-specific functionality and theoretically can be used in any Kubernetes cluster. It was tested in the following environments:
 
 - [x] cloud providers
+  - [x] Digital Ocean
   - [x] Azure Kubernetes Service
   - [x] Digital Ocean (Kubernetes v1.19.6; doesn't work on Kubernetes v1.20.2 due to errors in Argo Workflows)
 - [x] Windows 10 (2004)
