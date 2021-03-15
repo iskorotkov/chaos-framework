@@ -10,7 +10,7 @@ Chaos Framework is a platform for easy resilience testing in Kubernetes. It auto
   - [Dependencies](#dependencies)
   - [Installation](#installation)
   - [Requirements](#requirements)
-  - [FAQ](#faq)
+  - [FAQ and troubleshooting](#faq-and-troubleshooting)
   - [Other repos](#other-repos)
 
 ## Overview
@@ -168,9 +168,15 @@ In order for your custom applications and deployments to work, make sure they ha
 - Pods should contain a single container. Now it's only possible to induce failures on the first container in the pod, so all additional containers will be ignored.
 - Deployments and pods must be annotated with `litmuschaos.io/chaos: "true"`. This annotation prevents Litmus from invoking more damage on your application than expected. See [Litmus docs](https://docs.litmuschaos.io/docs/getstarted/).
 
-## FAQ
+## FAQ and troubleshooting
 
-Q: Network-related failures do not work.
+Q: All failures don't work.
+
+A: Check [requirements](#requirements). All target deployments and pods must have the matching label `app=<name>` and annotation `litmuschaos.io/chaos: "true"`.
+
+---
+
+Q: Network-related failures don't work.
 
 A: Check if [netem kernel module is available](#windows-10-wsl2-and-netem).
 
