@@ -215,3 +215,4 @@ Sample apps:
 - [Client](https://github.com/iskorotkov/chaos-client)
 - [CPU stress](https://github.com/iskorotkov/chaos-cpu-stress)
 - [IO stress](https://github.com/iskorotkov/chaos-io-stress)
+- [Web Todo](https://github.com/iskorotkov/web-todo)
