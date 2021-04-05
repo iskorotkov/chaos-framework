@@ -1,13 +1,25 @@
+ARGO_VERSION = v2.12.9
+LITMUS_VERSION = v1.13.0
+
+ARGO_NS = argo
+LITMUS_NS = litmus
+CHAOS_NS = chaos-app
+
 .PHONY: setup-all
-setup-all: setup-litmus setup-argo setup-chaos setup-app
+setup-all: create-ns setup-litmus setup-argo setup-chaos
+
+.PHONY: create-ns
+create-ns:
+	kubectl create ns $(ARGO_NS)
+	kubectl create ns $(LITMUS_NS)
+	kubectl create ns $(CHAOS_NS)
 
 .PHONY: setup-litmus
 setup-litmus:
 	# Install Litmus operator
-	kubectl create ns litmus
-	kubectl apply -f https://litmuschaos.github.io/litmus/litmus-operator-v1.13.0.yaml
+	kubectl apply -f https://litmuschaos.github.io/litmus/litmus-operator-$(LITMUS_VERSION).yaml
 	# Install generic experiments
-	kubectl apply -f https://hub.litmuschaos.io/api/chaos/1.13.0?file=charts/generic/experiments.yaml -n litmus
+	kubectl apply -f https://hub.litmuschaos.io/api/chaos/$(LITMUS_VERSION)?file=charts/generic/experiments.yaml -n litmus
 	# Setup ServiceAccount
 	kubectl apply -f https://litmuschaos.github.io/litmus/litmus-admin-rbac.yaml
 	# Setup ServiceAccount for Argo
@@ -15,8 +27,8 @@ setup-litmus:
 
 .PHONY: setup-argo
 setup-argo:
-	kubectl create ns argo
-	kubectl apply -f https://raw.githubusercontent.com/argoproj/argo/stable/manifests/install.yaml -n argo
+	# Install Argo operator
+	kubectl apply -f https://raw.githubusercontent.com/argoproj/argo/$(ARGO_VERSION)/manifests/install.yaml -n argo
 
 .PHONY: setup-chaos
 setup-chaos:
@@ -26,8 +38,3 @@ setup-chaos:
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-workflows/master/deploy/workflows.yaml
 	# Frontend
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-frontend/master/deploy/frontend.yaml
-
-.PHONY: setup-app
-setup-app:
-	# Create a new namespace (by default use "chaos-app" namespace)
-	kubectl create ns chaos-app
