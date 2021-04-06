@@ -1,5 +1,6 @@
 ARGO_VERSION = v2.12.9
 LITMUS_VERSION = v1.13.0
+LITMUS_EXPERIMENTS_VERSION = 1.13.0
 
 ARGO_NS = argo
 LITMUS_NS = litmus
@@ -19,7 +20,7 @@ setup-litmus:
 	# Install Litmus operator
 	kubectl apply -f https://litmuschaos.github.io/litmus/litmus-operator-$(LITMUS_VERSION).yaml
 	# Install generic experiments
-	kubectl apply -f https://hub.litmuschaos.io/api/chaos/$(LITMUS_VERSION)?file=charts/generic/experiments.yaml -n litmus
+	kubectl apply -f https://hub.litmuschaos.io/api/chaos/$(LITMUS_EXPERIMENTS_VERSION)?file=charts/generic/experiments.yaml -n litmus
 	# Setup ServiceAccount
 	kubectl apply -f https://litmuschaos.github.io/litmus/litmus-admin-rbac.yaml
 	# Setup ServiceAccount for Argo
