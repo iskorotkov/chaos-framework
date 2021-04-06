@@ -61,18 +61,14 @@ The platform does not have vendor-specific functionality and theoretically can b
 
 - [x] cloud providers
   - [x] Azure Kubernetes Service
-  - [ ] AWS
-  - [ ] Google Kubernetes Engine
+  - [x] Digital Ocean (Kubernetes v1.19.6; doesn't work on Kubernetes v1.20.2 due to errors in Argo Workflows)
 - [x] Windows 10 (2004)
   - [x] minikube with VirtualBox driver
-  - [ ] minikube with HyperV
   - [x] minikube with Docker driver (WSL2) - [additional setup required](#windows-10-wsl2-and-netem)
   - [x] Kubernetes cluster in Docker Desktop (WSL2) - [additional setup required](#windows-10-wsl2-and-netem)
-  - [ ] kind
-- [x] Linux (Ubuntu 20.04, Ubuntu 20.10)
+- [x] Linux (Ubuntu 20.04, Ubuntu 20.10, Fedora 34)
   - [x] minikube with Docker driver
-  - [ ] minikube with VirtualBox driver
-  - [ ] kind
+  - [x] minikube with KVM driver
 
 Note: when running on a platform where Linux kernel doesn't have netem module all network-related failures will not work! For Windows 10 WSL2 see [this section](#windows-10-wsl2-and-netem).
 
@@ -199,6 +195,12 @@ A: Download [Scheduler manifest](https://github.com/iskorotkov/chaos-scheduler/b
 Q: I try to delete a Kubernetes resource, but it won't get deleted (i. e. kubectl is stuck at deletion).
 
 A: Edit the resource manually in your text editor and remove all finalizers. If it doesn't work (or if the resource doesn't have any finalizers) find related resources and delete finalizers in them (e.g. when CRD deletion is stuck, delete all instances of this CRD).
+
+---
+
+Q: Test workflow always fails after stage completion due to no reason.
+
+A: Kubernetes v1.20+ may cause this. Downgrade your cluster to v1.19 and check if error occurs again.
 
 ## Other repos
 
