@@ -20,8 +20,8 @@ resource "digitalocean_kubernetes_cluster" "chaos_framework" {
 
   node_pool {
     name       = "worker-pool"
-    size       = "s-2vcpu-4gb"
+    size       = "s-1vcpu-2gb"
     auto_scale = false
-    node_count = 2
+    node_count = 3
   }
 }
