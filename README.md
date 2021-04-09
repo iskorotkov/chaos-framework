@@ -107,11 +107,11 @@ You can deploy them using instructions from official docs (recommended) or use [
         kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml -n litmus
         ```
 
-    2. Install the latest stable Argo:
+    2. Install the latest stable Argo (v2.12.9):
 
         ```shell
         kubectl create ns argo
-        kubectl apply -f https://raw.githubusercontent.com/argoproj/argo/stable/manifests/install.yaml -n argo
+        kubectl apply -f https://raw.githubusercontent.com/argoproj/argo/v2.12.9/manifests/install.yaml -n argo
         ```
 
 3. Install the latest stable components of Chaos Framework:
