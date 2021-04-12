@@ -207,6 +207,7 @@ A: Kubernetes v1.20+ may cause this. Downgrade your cluster to v1.19 and check i
 Chaos Framework components:
 
 - [Scheduler](https://github.com/iskorotkov/chaos-scheduler)
+- [Monitor](https://github.com/iskorotkov/chaos-monitor)
 - [Workflows](https://github.com/iskorotkov/chaos-workflows)
 - [Frontend](https://github.com/iskorotkov/chaos-frontend)
 - [Reducer (alpha)](https://github.com/iskorotkov/chaos-reducer)
@@ -218,3 +219,4 @@ Sample apps:
 - [CPU stress](https://github.com/iskorotkov/chaos-cpu-stress)
 - [IO stress](https://github.com/iskorotkov/chaos-io-stress)
 - [Web Todo](https://github.com/iskorotkov/web-todo)
+- [Bully election algorithm](https://github.com/iskorotkov/bully-election)
