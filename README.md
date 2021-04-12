@@ -93,14 +93,14 @@ You can deploy them using instructions from official docs (recommended) or use [
 
 2. Install requirements:
 
-    1. Install the latest stable Litmus (v1.13.0):
+    1. Install the latest stable Litmus (v1.13.2):
 
         ```shell
         # Install Litmus operator
         kubectl create ns litmus
-        kubectl apply -f https://litmuschaos.github.io/litmus/litmus-operator-v1.13.0.yaml
+        kubectl apply -f https://litmuschaos.github.io/litmus/litmus-operator-v1.13.2.yaml
         # Install generic experiments
-        kubectl apply -f https://hub.litmuschaos.io/api/chaos/1.13.0?file=charts/generic/experiments.yaml -n litmus
+        kubectl apply -f https://hub.litmuschaos.io/api/chaos/1.13.2?file=charts/generic/experiments.yaml -n litmus
         # Setup ServiceAccount
         kubectl apply -f https://litmuschaos.github.io/litmus/litmus-admin-rbac.yaml
         # Setup ServiceAccount for Argo
