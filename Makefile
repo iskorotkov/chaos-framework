@@ -18,15 +18,20 @@ create-ns:
 
 .PHONY: setup-litmus
 setup-litmus:
-	kubectl apply -f https://litmuschaos.github.io/litmus/$(LITMUS_VERSION)/litmus-$(LITMUS_VERSION).yaml -n $(LITMUS_NS)
-	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-operator/$(LITMUS_VERSION)/deploy/chaos_crds.yaml
-	kubectl apply -f https://hub.litmuschaos.io/api/chaos/$(LITMUS_VERSION)?file=charts/generic/experiments.yaml -n $(LITMUS_NS)
-	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml -n $(LITMUS_NS)
+	# Install Litmus operator.
+	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/$(LITMUS_VERSION)/mkdocs/docs/litmus-operator-v$(LITMUS_VERSION).yaml
+	# Install service account for Litmus.
+	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/$(LITMUS_VERSION)/mkdocs/docs/litmus-admin-rbac.yaml
+	# Install generic experiments.
+	kubectl apply -f https://hub.litmuschaos.io/api/chaos/$(LITMUS_VERSION)?file=charts/generic/experiments.yaml
 
 .PHONY: setup-argo
 setup-argo:
-	# kubectl apply -f https://github.com/argoproj/argo-workflows/releases/download/$(ARGO_VERSION)/install.yaml  -n $(ARGO_NS)
-	# We override auth method to from 'sso' to 'server' and set non-default executor to 'k8sapi', so we have to use local file.
+	# Install service account for Argo Workflows.
+	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml
+	# Install Argo Workflows.
+	## kubectl apply -f https://github.com/argoproj/argo-workflows/releases/download/$(ARGO_VERSION)/install.yaml  -n $(ARGO_NS)
+	## We override auth method to from 'sso' to 'server' and set non-default executor to 'k8sapi', so we have to use local file.
 	kubectl apply -f deploy/argo.yaml -n $(ARGO_NS)
 
 .PHONY: setup-chaos
