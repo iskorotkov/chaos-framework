@@ -40,3 +40,5 @@ setup-example-app:
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/bully-election/master/deploy/bully-election.yml -n $(CHAOS_APP_NS)
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/bully-election-dashboard/master/deploy/bully-election-dashboard.yml -n bully-election-dashboard
 
+setup-chaos-app-role:
+	kubectl apply -f deploy/chaos-app-role.yaml -n $(CHAOS_APP_NS)
