@@ -2,19 +2,11 @@ ARGO_VERSION = v3.2.4
 LITMUS_VERSION = 2.3.0
 
 ARGO_NS = argo
-LITMUS_NS = litmus
 CHAOS_NS = chaos-framework
 CHAOS_APP_NS = chaos-app
 
 .PHONY: setup-all
-setup-all: create-ns setup-litmus setup-argo setup-chaos
-
-.PHONY: create-ns
-create-ns:
-	kubectl create ns $(LITMUS_NS)
-	kubectl create ns $(ARGO_NS)
-	kubectl create ns $(CHAOS_NS)
-	kubectl create ns $(CHAOS_APP_NS)
+setup-all: setup-litmus setup-argo setup-chaos
 
 .PHONY: setup-litmus
 setup-litmus:
@@ -27,6 +19,7 @@ setup-litmus:
 
 .PHONY: setup-argo
 setup-argo:
+	kubectl create ns $(ARGO_NS)
 	# Install service account for Argo Workflows.
 	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml
 	# Install Argo Workflows.
@@ -36,6 +29,8 @@ setup-argo:
 
 .PHONY: setup-chaos
 setup-chaos:
+	kubectl create ns $(CHAOS_NS)
+	kubectl create ns $(CHAOS_APP_NS)
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-scheduler/master/deploy/scheduler.yaml
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-workflows/master/deploy/workflows.yaml
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-frontend/master/deploy/frontend.yaml
