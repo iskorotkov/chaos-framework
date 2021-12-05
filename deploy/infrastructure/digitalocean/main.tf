@@ -13,7 +13,7 @@ provider "digitalocean" {
 
 resource "digitalocean_kubernetes_cluster" "chaos_framework" {
   name         = "chaos-framework"
-  version      = "1.19.6-do.0"
+  version      = "1.21.5-do.0"
   region       = "fra1"
   auto_upgrade = false
   tags         = ["chaos-framework"]

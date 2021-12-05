@@ -1,41 +1,44 @@
-ARGO_VERSION = v2.12.9
-LITMUS_VERSION = v1.13.0
-LITMUS_EXPERIMENTS_VERSION = 1.13.0
+ARGO_VERSION = v3.2.4
+LITMUS_VERSION = 2.3.0
 
 ARGO_NS = argo
-LITMUS_NS = litmus
-CHAOS_NS = chaos-app
+CHAOS_NS = chaos-framework
+CHAOS_APP_NS = chaos-app
 
 .PHONY: setup-all
-setup-all: create-ns setup-litmus setup-argo setup-chaos
-
-.PHONY: create-ns
-create-ns:
-	kubectl create ns $(ARGO_NS)
-	kubectl create ns $(LITMUS_NS)
-	kubectl create ns $(CHAOS_NS)
+setup-all: setup-litmus setup-argo setup-chaos
 
 .PHONY: setup-litmus
 setup-litmus:
-	# Install Litmus operator
-	kubectl apply -f https://litmuschaos.github.io/litmus/litmus-operator-$(LITMUS_VERSION).yaml
-	# Install generic experiments
-	kubectl apply -f https://hub.litmuschaos.io/api/chaos/$(LITMUS_EXPERIMENTS_VERSION)?file=charts/generic/experiments.yaml -n litmus
-	# Setup ServiceAccount
-	kubectl apply -f https://litmuschaos.github.io/litmus/litmus-admin-rbac.yaml
-	# Setup ServiceAccount for Argo
-	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml -n litmus
+	# Install Litmus operator.
+	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/$(LITMUS_VERSION)/mkdocs/docs/litmus-operator-v$(LITMUS_VERSION).yaml
+	# Install service account for Litmus.
+	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/$(LITMUS_VERSION)/mkdocs/docs/litmus-admin-rbac.yaml
+	# Install generic experiments.
+	kubectl apply -f https://hub.litmuschaos.io/api/chaos/$(LITMUS_VERSION)?file=charts/generic/experiments.yaml
 
 .PHONY: setup-argo
 setup-argo:
-	# Install Argo operator
-	kubectl apply -f https://raw.githubusercontent.com/argoproj/argo/$(ARGO_VERSION)/manifests/install.yaml -n argo
+	kubectl create ns $(ARGO_NS)
+	# Install service account for Argo Workflows.
+	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml
+	# Install Argo Workflows.
+	## kubectl apply -f https://github.com/argoproj/argo-workflows/releases/download/$(ARGO_VERSION)/install.yaml  -n $(ARGO_NS)
+	## We override auth method to from 'sso' to 'server' and set non-default executor to 'k8sapi', so we have to use local file.
+	kubectl apply -f deploy/argo.yaml -n $(ARGO_NS)
 
 .PHONY: setup-chaos
 setup-chaos:
-	# Scheduler backend
+	kubectl create ns $(CHAOS_NS)
+	kubectl create ns $(CHAOS_APP_NS)
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-scheduler/master/deploy/scheduler.yaml
-	# Workflows backend
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-workflows/master/deploy/workflows.yaml
-	# Frontend
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-frontend/master/deploy/frontend.yaml
+
+.PHONY: setup-example-app
+setup-example-app:
+	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/bully-election/master/deploy/bully-election.yml -n $(CHAOS_APP_NS)
+	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/bully-election-dashboard/master/deploy/bully-election-dashboard.yml -n bully-election-dashboard
+
+setup-chaos-app-role:
+	kubectl apply -f deploy/chaos-app-role.yaml -n $(CHAOS_APP_NS)

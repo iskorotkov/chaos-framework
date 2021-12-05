@@ -82,10 +82,10 @@ See [WSL2 kernel Github repo](https://github.com/microsoft/WSL2-Linux-Kernel) an
 
 The platform requires you to deploy several dependencies:
 
-- [Argo Workflows](https://argoproj.github.io/)
-- [Litmus](https://litmuschaos.io/)
+- [Argo Workflows](https://argoproj.github.io/).
+- [Litmus](https://litmuschaos.io/).
 
-You can deploy them using instructions from official docs (recommended) or use [installation section](#installation) below.
+You can deploy them using instructions from official docs or use [installation section](#installation) below (recommended).
 
 ## Installation
 
@@ -93,46 +93,44 @@ You can deploy them using instructions from official docs (recommended) or use [
 
 2. Install requirements:
 
-    1. Install the latest stable Litmus (v1.13.0):
+    1. Install the latest stable Litmus (v2.3.0):
 
         ```shell
-        # Install Litmus operator
-        kubectl create ns litmus
-        kubectl apply -f https://litmuschaos.github.io/litmus/litmus-operator-v1.13.0.yaml
-        # Install generic experiments
-        kubectl apply -f https://hub.litmuschaos.io/api/chaos/1.13.0?file=charts/generic/experiments.yaml -n litmus
-        # Setup ServiceAccount
-        kubectl apply -f https://litmuschaos.github.io/litmus/litmus-admin-rbac.yaml
-        # Setup ServiceAccount for Argo
-        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml -n litmus
-        ```
+        # Install Litmus operator.
+        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/2.3.0/mkdocs/docs/litmus-operator-v2.3.0.yaml
+        # Install service account for Litmus.
+        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/2.3.0/mkdocs/docs/litmus-admin-rbac.yaml
+        # Install generic experiments.
+        kubectl apply -f https://hub.litmuschaos.io/api/chaos/2.3.0?file=charts/generic/experiments.yaml
+       ```
 
-    2. Install the latest stable Argo (v2.12.9):
+    2. Install the latest stable Argo (v3.2.4):
 
         ```shell
         kubectl create ns argo
-        kubectl apply -f https://raw.githubusercontent.com/argoproj/argo/v2.12.9/manifests/install.yaml -n argo
+        # Install service account for Argo Workflows.
+        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml
+        # Install Argo Workflows.
+        kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-framework/master/deploy/argo.yaml -n argo
         ```
 
 3. Install the latest stable components of Chaos Framework:
 
     ```shell
-    # Scheduler backend
+    kubectl create ns chaos-framework
     kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-scheduler/master/deploy/scheduler.yaml
-    # Workflows backend
     kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-workflows/master/deploy/workflows.yaml
-    # Frontend
     kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-frontend/master/deploy/frontend.yaml
     ```
 
 4. Install sample apps (or install yours):
 
     ```shell
-    # Create a new namespace (by default use "chaos-app" namespace)
+    # Create a new namespace (by default use "chaos-app" namespace).
     kubectl create ns chaos-app
-    # Server
+    # Server.
     kubectl apply -n chaos-app -f https://raw.githubusercontent.com/iskorotkov/chaos-server/master/deploy/counter.yaml
-    # Client
+    # Client.
     kubectl apply -n chaos-app -f https://raw.githubusercontent.com/iskorotkov/chaos-client/master/deploy/counter.yaml
     ```
 
@@ -141,7 +139,7 @@ You can deploy them using instructions from official docs (recommended) or use [
     1. Connect to Chaos Frontend:
 
         ```shell
-        kubectl port-forward -n chaos-framework deploy/frontend 8811:80
+        kubectl port-forward -n chaos-framework svc/frontend 8080:80
         ```
 
     2. Open `http://localhost:8811/` in your browser.
@@ -151,7 +149,7 @@ You can deploy them using instructions from official docs (recommended) or use [
     4. (Optional) Connect to Argo:
 
         ```shell
-        kubectl port-forward -n argo deploy/argo-server 2746:2746
+        kubectl port-forward -n argo svc/argo-server 2746:2746
         ```
 
     5. (Optional) Open `http://localhost:2746/` in your browser for a more detailed info on workflows.
@@ -200,7 +198,7 @@ A: Edit the resource manually in your text editor and remove all finalizers. If 
 
 Q: Test workflow always fails after stage completion due to no reason.
 
-A: Kubernetes v1.20+ may cause this. Downgrade your cluster to v1.19 and check if error occurs again.
+A: Kubernetes <=v1.19 may cause this due to `docker` driver. Upgrade your cluster to >=v1.20 and use `containerd` runtime (should be used by default), then check if error occurs again.
 
 ## Other repos
 
