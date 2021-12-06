@@ -160,13 +160,12 @@ In order for your custom applications and deployments to work, make sure they ha
 
 - Deployments and pods must contain label `app=<name>`. This label is used for selecting targets in a target namespace. Label key can be changed via environment variables (see [Scheduler's README](https://github.com/iskorotkov/chaos-scheduler)).
 - Pods should contain a single container. Now it's only possible to induce failures on the first container in the pod, so all additional containers will be ignored.
-- Deployments and pods must be annotated with `litmuschaos.io/chaos: "true"`. This annotation prevents Litmus from invoking more damage on your application than expected. See [Litmus docs](https://docs.litmuschaos.io/docs/getstarted/).
 
 ## FAQ and troubleshooting
 
 Q: All failures don't work.
 
-A: Check [requirements](#requirements). All target deployments and pods must have the matching label `app=<name>` and annotation `litmuschaos.io/chaos: "true"`.
+A: Check [requirements](#requirements). All target deployments and pods must have the matching label `app=<name>`.
 
 ---
 
