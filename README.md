@@ -109,7 +109,7 @@ You can deploy them using instructions from official docs or use [installation s
         ```shell
         kubectl create ns argo
         # Install service account for Argo Workflows.
-        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml
+        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml -n litmus
         # Install Argo Workflows.
         kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-framework/master/deploy/argo.yaml -n argo
         ```

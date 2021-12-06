@@ -21,7 +21,7 @@ setup-litmus:
 setup-argo:
 	kubectl create ns $(ARGO_NS)
 	# Install service account for Argo Workflows.
-	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml
+	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml -n litmus
 	# Install Argo Workflows.
 	## kubectl apply -f https://github.com/argoproj/argo-workflows/releases/download/$(ARGO_VERSION)/install.yaml  -n $(ARGO_NS)
 	## We override auth method to from 'sso' to 'server' and set non-default executor to 'k8sapi', so we have to use local file.
