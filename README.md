@@ -101,7 +101,7 @@ You can deploy them using instructions from official docs or use [installation s
         # Install service account for Litmus.
         kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/2.3.0/mkdocs/docs/litmus-admin-rbac.yaml
         # Install generic experiments.
-        kubectl apply -f https://hub.litmuschaos.io/api/chaos/2.3.0?file=charts/generic/experiments.yaml
+        kubectl apply -f https://hub.litmuschaos.io/api/chaos/2.3.0?file=charts/generic/experiments.yaml -n litmus
        ```
 
     2. Install the latest stable Argo (v3.2.4):
