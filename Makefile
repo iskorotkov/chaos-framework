@@ -15,7 +15,7 @@ setup-litmus:
 	# Install service account for Litmus.
 	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/$(LITMUS_VERSION)/mkdocs/docs/litmus-admin-rbac.yaml
 	# Install generic experiments.
-	kubectl apply -f https://hub.litmuschaos.io/api/chaos/$(LITMUS_VERSION)?file=charts/generic/experiments.yaml
+	kubectl apply -f https://hub.litmuschaos.io/api/chaos/$(LITMUS_VERSION)?file=charts/generic/experiments.yaml -n litmus
 
 .PHONY: setup-argo
 setup-argo:
