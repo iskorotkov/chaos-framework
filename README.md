@@ -93,31 +93,36 @@ You can deploy them using instructions from official docs or use [installation s
 
 2. Install requirements:
 
-    1. Install the latest stable Litmus (v2.3.0):
+    1. Install the latest stable Litmus (v2.7.0):
 
         ```shell
         # Install Litmus operator.
-        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/2.3.0/mkdocs/docs/litmus-operator-v2.3.0.yaml
+        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/master/mkdocs/docs/litmus-operator-v2.7.0.yaml
         # Install service account for Litmus.
-        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/2.3.0/mkdocs/docs/litmus-admin-rbac.yaml
+        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/2.7.0/mkdocs/docs/litmus-admin-rbac.yaml
         # Install generic experiments.
-        kubectl apply -f https://hub.litmuschaos.io/api/chaos/2.3.0?file=charts/generic/experiments.yaml -n litmus
+        kubectl apply -f https://hub.litmuschaos.io/api/chaos/2.7.0?file=charts/generic/experiments.yaml -n litmus
        ```
 
-    2. Install the latest stable Argo (v3.2.4):
+    2. Install the latest stable Argo (v3.3.1):
 
         ```shell
-        kubectl create ns argo
-        # Install service account for Argo Workflows.
-        kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml -n litmus
+        kubectl create ns argo || echo "Namespace argo already exists."
+        # Install service account and config map for Argo Workflows.
+        kubectl apply -f deploy/argo.yaml -n litmus
         # Install Argo Workflows.
-        kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-framework/master/deploy/argo.yaml -n argo
+        kubectl apply -f https://github.com/argoproj/argo-workflows/releases/download/v3.3.1/install.yaml -n argo
+        # Override auth method to from 'sso' to 'server'.
+        kubectl patch deploy/argo-server -n argo -p '{"spec": {"template": {"spec": {"containers": [{"name": "argo-server", "args": ["server", "--auth-mode", "server"]}]}}}}'
+        # Override runtime executor from 'emissary' to 'k8sapi'.
+        kubectl patch deploy/workflow-controller -n argo -p '{"spec": {"template": {"spec": {"containers": [{"name": "workflow-controller", "args": ["--configmap", "workflow-controller-configmap-k8sapi", "--executor-image", "quay.io/argoproj/argoexec:v3.3.1"]}]}}}}'
         ```
 
 3. Install the latest stable components of Chaos Framework:
 
     ```shell
-    kubectl create ns chaos-framework
+    kubectl create ns chaos-app || echo "Namespace chaos-app already exists."
+    kubectl create ns chaos-framework || echo "Namespace chaos-framework already exists."
     kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-scheduler/master/deploy/scheduler.yaml
     kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-workflows/master/deploy/workflows.yaml
     kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-frontend/master/deploy/frontend.yaml
@@ -126,8 +131,6 @@ You can deploy them using instructions from official docs or use [installation s
 4. Install sample apps (or install yours):
 
     ```shell
-    # Create a new namespace (by default use "chaos-app" namespace).
-    kubectl create ns chaos-app
     # Server.
     kubectl apply -n chaos-app -f https://raw.githubusercontent.com/iskorotkov/chaos-server/master/deploy/counter.yaml
     # Client.

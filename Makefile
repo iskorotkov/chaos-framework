@@ -1,5 +1,5 @@
-ARGO_VERSION = v3.2.4
-LITMUS_VERSION = 2.3.0
+ARGO_VERSION = v3.3.1
+LITMUS_VERSION = 2.7.0
 
 ARGO_NS = argo
 CHAOS_NS = chaos-framework
@@ -11,7 +11,7 @@ setup-all: setup-litmus setup-argo setup-chaos
 .PHONY: setup-litmus
 setup-litmus:
 	# Install Litmus operator.
-	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/$(LITMUS_VERSION)/mkdocs/docs/litmus-operator-v$(LITMUS_VERSION).yaml
+	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/master/mkdocs/docs/litmus-operator-v$(LITMUS_VERSION).yaml
 	# Install service account for Litmus.
 	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/$(LITMUS_VERSION)/mkdocs/docs/litmus-admin-rbac.yaml
 	# Install generic experiments.
@@ -19,18 +19,20 @@ setup-litmus:
 
 .PHONY: setup-argo
 setup-argo:
-	kubectl create ns $(ARGO_NS)
-	# Install service account for Argo Workflows.
-	kubectl apply -f https://raw.githubusercontent.com/litmuschaos/chaos-workflows/master/Argo/argo-access.yaml -n litmus
+	kubectl create ns $(ARGO_NS) || echo "Namespace $(ARGO_NS) already exists."
+	# Install service account and config map for Argo Workflows.
+	kubectl apply -f deploy/argo.yaml -n litmus
 	# Install Argo Workflows.
-	## kubectl apply -f https://github.com/argoproj/argo-workflows/releases/download/$(ARGO_VERSION)/install.yaml  -n $(ARGO_NS)
-	## We override auth method to from 'sso' to 'server' and set non-default executor to 'k8sapi', so we have to use local file.
-	kubectl apply -f deploy/argo.yaml -n $(ARGO_NS)
+	kubectl apply -f https://github.com/argoproj/argo-workflows/releases/download/$(ARGO_VERSION)/install.yaml -n $(ARGO_NS)
+	# Override auth method from 'sso' to 'server'.
+	kubectl patch deploy/argo-server -n $(ARGO_NS) -p '{"spec": {"template": {"spec": {"containers": [{"name": "argo-server", "args": ["server", "--auth-mode", "server"]}]}}}}'
+	# Override runtime executor from 'emissary' to 'k8sapi'.
+	kubectl patch deploy/workflow-controller -n $(ARGO_NS) -p '{"spec": {"template": {"spec": {"containers": [{"name": "workflow-controller", "args": ["--configmap", "workflow-controller-configmap-k8sapi", "--executor-image", "quay.io/argoproj/argoexec:v3.3.1"]}]}}}}'
 
 .PHONY: setup-chaos
 setup-chaos:
-	kubectl create ns $(CHAOS_NS)
-	kubectl create ns $(CHAOS_APP_NS)
+	kubectl create ns $(CHAOS_NS) || echo "Namespace $(CHAOS_NS) already exists."
+	kubectl create ns $(CHAOS_APP_NS) || echo "Namespace $(CHAOS_APP_NS) already exists."
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-scheduler/master/deploy/scheduler.yaml
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-workflows/master/deploy/workflows.yaml
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-frontend/master/deploy/frontend.yaml
