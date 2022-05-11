@@ -36,6 +36,7 @@ setup-chaos:
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-scheduler/master/deploy/scheduler.yaml
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-workflows/master/deploy/workflows.yaml
 	kubectl apply -f https://raw.githubusercontent.com/iskorotkov/chaos-frontend/master/deploy/frontend.yaml
+	kubectl apply -f deploy/services/events/events.yaml
 
 .PHONY: setup-example-app
 setup-example-app:
